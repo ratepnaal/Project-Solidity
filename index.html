@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title="DApp Example</title>
+    <script src="https://cdn.ethers.io/lib/ethers-5.0.umd.min.js" integrity="sha384-P7YDSv1zCv8DZReYjfM6v1dqW6uZ7UJ1Tqsz3fTm6X4eyi8YjBou2DcM6Q5Jy4b8" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <h1>DApp Example</h1>
+    <div>
+      <label for="message">Enter a message:</label>
+      <input type="text" id="message" />
+      <button onclick="saveMessage()">Save</button>
+    </div>
+    <div>
+      <button onclick="readMessage()">Read Message</button>
+      <p id="messageOutput"></p>
+    </div>
+
+    <script>
+      const contractAddress = "CONTRACT_ADDRESS"; // Replace with the actual contract address
+
+      // Connect to the contract
+      const provider = ethers.getDefaultProvider("rinkeby"); // Replace with the desired network
+      const contract = new ethers.Contract(contractAddress, abi, provider);
+
+      // Function to save the message
+      async function saveMessage() {
+        const messageInput = document.getElementById("message");
+        const newMessage = messageInput.value;
+
+        await contract.saveMessage(newMessage);
+
+        messageInput.value = "";
+      }
+
+      // Function to read the message
+      async function readMessage() {
+        const messageOutput = document.getElementById("messageOutput");
+
+        const savedMessage = await contract.readMessage();
+
+        messageOutput.innerText = savedMessage;
+      }
+    </script>
+  </body>
+</html>
